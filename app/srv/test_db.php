@@ -2,7 +2,7 @@
 // test_db.php
 // Prueba simple de conexión a la base de datos SQLite
 
-$dbPath = __DIR__ . '/onlineOrders.db'; // Ajusta según la ubicación real de tu .db
+$dbPath = __DIR__ . '../../onlineOrders/onlineOrders.db'; // Ajusta según la ubicación real de tu .db
 
 try {
     if (!file_exists($dbPath)) {

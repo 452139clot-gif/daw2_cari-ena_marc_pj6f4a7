@@ -4,7 +4,8 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-$dbPath = __DIR__ . '../onlineOrders.db'; // Ajusta según tu ubicación
+$dbPath = __DIR__ . '/../../onlineOrders/onlineOrders.db';
+ // Ajusta según tu ubicación
 
 try {
     $pdo = new PDO('sqlite:' . $dbPath);

@@ -69,7 +69,8 @@ $subtotal = round($subtotal, 2);
 // --- SQLite PART ---
 try {
     // Ruta de la base de dades (fora de l'API per seguretat)
-    $dbPath = __DIR__ . '../onlineOrders.db';
+    $dbPath = __DIR__ . '/../../onlineOrders/onlineOrders.db';
+
 
     // Crear connexió SQLite
     $pdo = new PDO('sqlite:' . $dbPath);
