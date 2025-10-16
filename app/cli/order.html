@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cultura+ | New Order</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Small local styles to ensure the live total is always visible and distinct */
+    #liveTotal {
+      display: block;
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #fffbe8;
+      border-left: 4px solid #f0b429;
+      color: #333;
+      font-weight: 600;
+    }
+    #liveTotal small { font-weight: 400; color: #555; font-size: 0.9rem; display:block; margin-top:6px; }
+  </style>
+
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="images/images.jfif" alt="Cultura+ Logo" />
+      <h1>New Order</h1>
+      <p>Fill in the customer and order details below.</p>
+    </header>
+
+    <form id="orderForm" class="order-form" autocomplete="off">
+      <div class="form-row full">
+        <label for="order_code">Order code (ID)</label>
+        <input id="order_code" name="order_code" type="text" placeholder="e.g. ORD-2025-001" required>
+      </div>
+
+      <div class="form-row">
+        <label for="full_name">Full name</label>
+        <input id="full_name" name="full_name" type="text" placeholder="Customer full name" required>
+      </div>
+
+      <div class="form-row">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" placeholder="name@example.com" required>
+      </div>
+
+      <div class="form-row">
+        <label for="address">Physical address</label>
+        <input id="address" name="address" type="text" placeholder="Street, city, zip" required>
+      </div>
+
+      <div class="form-row">
+        <label for="phone">Phone number</label>
+        <select id="phone-prefixes" name="phone-prefixes" required>
+  <option value="+43">Austria (+43)</option>
+  <option value="+32">Belgium (+32)</option>
+  <option value="+387">Bosnia and Herzegovina (+387)</option>
+  <option value="+359">Bulgaria (+359)</option>
+  <option value="+385">Croatia (+385)</option>
+  <option value="+357">Cyprus (+357)</option>
+  <option value="+420">Czech Republic (+420)</option>
+  <option value="+45">Denmark (+45)</option>
+  <option value="+372">Estonia (+372)</option>
+  <option value="+358">Finland (+358)</option>
+  <option value="+33">France (+33)</option>
+  <option value="+49">Germany (+49)</option>
+  <option value="+30">Greece (+30)</option>
+  <option value="+36">Hungary (+36)</option>
+  <option value="+353">Ireland (+353)</option>
+  <option value="+39">Italy (+39)</option>
+  <option value="+371">Latvia (+371)</option>
+  <option value="+423">Liechtenstein (+423)</option>
+  <option value="+370">Lithuania (+370)</option>
+  <option value="+352">Luxembourg (+352)</option>
+  <option value="+356">Malta (+356)</option>
+  <option value="+373">Moldova (+373)</option>
+  <option value="+377">Monaco (+377)</option>
+  <option value="+389">North Macedonia (+389)</option>
+  <option value="+31">Netherlands (+31)</option>
+  <option value="+47">Norway (+47)</option>
+  <option value="+48">Poland (+48)</option>
+  <option value="+351">Portugal (+351)</option>
+  <option value="+40">Romania (+40)</option>
+  <option value="+7">Russia (+7)</option>
+  <option value="+381">Serbia (+381)</option>
+  <option value="+421">Slovakia (+421)</option>
+  <option value="+386">Slovenia (+386)</option>
+  <option value="+34">Spain (+34)</option>
+  <option value="+46">Sweden (+46)</option>
+  <option value="+41">Switzerland (+41)</option>
+  <option value="+44">United Kingdom (+44)</option>
+</select>
+
+
+        <input id="phone" name="phone" type="number" placeholder="600 000 000" required>
+      </div>
+
+      <div class="products" aria-live="polite">
+        <div class="product">
+          <div class="pname">Cinema Ticket</div>
+          <div class="pprice">€ <span data-price="8.00">8.00</span></div>
+          <div class="ptoggle"><label><input type="checkbox" data-index="0" class="enable-check"> Enable</label></div>
+          <div class="pqty"><input type="number" min="1" value="1" class="qty" data-index="0" disabled></div>
+        </div>
+
+        <div class="product">
+          <div class="pname">Theater Ticket</div>
+          <div class="pprice">€ <span data-price="15.00">15.00</span></div>
+          <div class="ptoggle"><label><input type="checkbox" data-index="1" class="enable-check"> Enable</label></div>
+          <div class="pqty"><input type="number" min="1" value="1" class="qty" data-index="1" disabled></div>
+        </div>
+
+        <div class="product">
+          <div class="pname">Exhibition Ticket</div>
+          <div class="pprice">€ <span data-price="10.00">10.00</span></div>
+          <div class="ptoggle"><label><input type="checkbox" data-index="2" class="enable-check"> Enable</label></div>
+          <div class="pqty"><input type="number" min="1" value="1" class="qty" data-index="2" disabled></div>
+        </div>
+
+        <div class="product">
+          <div class="pname">Concert Ticket</div>
+          <div class="pprice">€ <span data-price="25.00">25.00</span></div>
+          <div class="ptoggle"><label><input type="checkbox" data-index="3" class="enable-check"> Enable</label></div>
+          <div class="pqty"><input type="number" min="1" value="1" class="qty" data-index="3" disabled></div>
+        </div>
+      </div>
+
+      <div class="form-row full">
+        <small class="hint">Select the items you want to include and set quantities. Click "Submit Order" to send the order to the server (VAT 21% will be calculated server-side too).</small>
+      </div>
+
+      <!-- Live price area (updates interactively) -->
+      <div id="liveTotal" aria-atomic="true">
+        Subtotal: € 0.00 — Total with VAT (21%): € 0.00
+        <small>Selected items: 0</small>
+      </div>
+
+      <div class="form-row full">
+        <button id="submitBtn" type="submit" class="btn">Submit Order</button>
+        <button type="button" class="btn" onclick="location.href='menu.html'">← Back to Menu</button>
+        <button type="button" class="btn" onclick="location.href='index.html'">🏠 Home</button>
+      </div>
+
+      <div id="result" class="result" role="status" style="display:none;"></div>
+    </form>
+  </div>
+
+  <script>
+    // Inline script to compute live totals (subtotal + VAT 21%) as user toggles items/quantities.
+    (function() {
+      const VAT_RATE = 0.21;
+      const liveBox = document.getElementById('liveTotal');
+
+      function parsePrice(str) {
+        // Ensure float
+        const n = parseFloat(str);
+        return isNaN(n) ? 0.0 : n;
+      }
+
+      function computeTotals() {
+        const products = document.querySelectorAll('.product');
+        let subtotal = 0;
+        let countSelected = 0;
+
+        products.forEach((el) => {
+          const priceEl = el.querySelector('.pprice span');
+          const price = parsePrice(priceEl.dataset.price || priceEl.textContent);
+          const checkbox = el.querySelector('.enable-check');
+          const qtyInput = el.querySelector('.qty');
+          const qty = checkbox.checked ? Math.max(1, parseInt(qtyInput.value || '0', 10)) : 0;
+
+          if (checkbox.checked && qty > 0) {
+            subtotal += price * qty;
+            countSelected += qty;
+          }
+        });
+
+        subtotal = Math.round((subtotal + Number.EPSILON) * 100) / 100;
+        const totalWithVat = Math.round((subtotal * (1 + VAT_RATE) + Number.EPSILON) * 100) / 100;
+
+        // Format numbers to 2 decimals and localize with comma/dot according to browser locale
+        const fmt = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        liveBox.innerHTML = `Subtotal: € ${fmt.format(subtotal)} — Total with VAT (21%): € ${fmt.format(totalWithVat)}<small>Selected items: ${countSelected}</small>`;
+      }
+
+      // Attach event listeners
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.enable-check').forEach(chk => {
+          chk.addEventListener('change', (e) => {
+            const idx = e.target.dataset.index;
+            const qtyInput = document.querySelector(`.qty[data-index="${idx}"]`);
+            if (e.target.checked) {
+              qtyInput.disabled = false;
+              if (!qtyInput.value || parseInt(qtyInput.value, 10) <= 0) qtyInput.value = 1;
+            } else {
+              qtyInput.disabled = true;
+              qtyInput.value = 1;
+            }
+            computeTotals();
+          });
+        });
+
+        document.querySelectorAll('.qty').forEach(qty => {
+          qty.addEventListener('input', () => {
+            // clamp to min 1 if not empty
+            if (qty.value === '') return;
+            const v = parseInt(qty.value, 10);
+            if (isNaN(v) || v < 1) qty.value = 1;
+            computeTotals();
+          });
+        });
+
+        // compute initial totals (in case some defaults are set)
+        computeTotals();
+      });
+
+      // Expose compute function for other scripts if needed
+      window.cultura_computeTotals = computeTotals;
+    })();
+  </script>
+
+  <!-- existing app.js handles submit and server communication -->
+  <script src="js/app.js"></script>
+</body>
+</html>
