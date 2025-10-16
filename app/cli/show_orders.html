@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Listado de Comandas</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background-color: #f4f4f4; }
+    tr:nth-child(even) { background-color: #fafafa; }
+    pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; }
+</style>
+</head>
+<body>
+
+<h1>Listado de Comandas</h1>
+<table id="ordersTable">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Items</th>
+            <th>Subtotal</th>
+            <th>Total (IVA incluido)</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td colspan="8">Cargando datos...</td></tr>
+    </tbody>
+</table>
+
+<script>
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+}
+
+async function loadOrders() {
+    const tbody = document.querySelector('#ordersTable tbody');
+    try {
+        const resp = await fetch('../srv/show_orders.php');
+        if (!resp.ok) throw new Error('Error al cargar los datos');
+
+        const orders = await resp.json();
+        if (!Array.isArray(orders) || orders.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8">No hay comandes registradas.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = ''; // Limpiar tabla
+        orders.forEach(order => {
+            const items = JSON.parse(order.items_json || '[]')
+                        .map(it => `${it.quantity} × ${escapeHtml(it.name)} (€${parseFloat(it.price).toFixed(2)})`)
+                        .join('<br>');
+
+            const row = `<tr>
+                <td>${escapeHtml(order.full_name)}</td>
+                <td>${escapeHtml(order.email)}</td>
+                <td>${escapeHtml(order.phone)}</td>
+                <td>${escapeHtml(order.address)}</td>
+                <td>${items || 'Ningún item'}</td>
+                <td>€ ${parseFloat(order.subtotal).toFixed(2)}</td>
+                <td>€ ${parseFloat(order.total_with_vat).toFixed(2)}</td>
+                <td>${escapeHtml(order.created_at)}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8">Error cargando datos: ${escapeHtml(err.message)}</td></tr>`;
+        console.error(err);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadOrders);
+</script>
+
+</body>
+</html>

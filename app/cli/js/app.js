@@ -1,4 +1,16 @@
 // js/app.js
+
+  // Función simple para escapar caracteres HTML y evitar inyección
+function escapeHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 // Se ejecuta cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', () => {
   // Referencias a elementos del DOM
